@@ -6,7 +6,7 @@
 /*   By: ashirzad <ashirzad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:12:29 by ashirzad          #+#    #+#             */
-/*   Updated: 2024/01/22 11:42:10 by ashirzad         ###   ########.fr       */
+/*   Updated: 2024/02/01 09:37:40 by ashirzad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,13 @@ void	ss(s_stack **stack_a, s_stack **stack_b)
 
 void	pa(s_stack **stack_a, s_stack **stack_b)
 {
-	s_stack *stack_p = *stack_b;
-	if (!stack_p)
+	if (!(*stack_b))
 		return ;
-	int tmp = stack_p->data;
+	int tmp = (*stack_b)->data;
 	push_stack(stack_a, tmp);
 	*stack_b = (*stack_b)->next;
 	(*stack_b)->pre = NULL;
-	index_restart(&stack_p);
+	index_restart(stack_b);
 	index_restart(stack_a);
 }
 

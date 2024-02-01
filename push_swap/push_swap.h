@@ -6,7 +6,7 @@
 /*   By: ashirzad <ashirzad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:18:53 by ashirzad          #+#    #+#             */
-/*   Updated: 2024/01/21 18:24:16 by ashirzad         ###   ########.fr       */
+/*   Updated: 2024/02/01 09:33:22 by ashirzad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	push_stack(s_stack **stack_a, int value);
 int		count_nodes(s_stack **stack_a);
 
 //moves
+void	index_restart(s_stack **stack);
 void	sa(s_stack **stack_a);
 void	sb(s_stack **stack_b);
 void	ss(s_stack **stack_a, s_stack **stack_b);

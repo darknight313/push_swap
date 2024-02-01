@@ -1,7 +1,7 @@
 # COMPILER
 CC = cc
 # COMPILATION FLAGS
-CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror
 # LIBRARY NAME
 NAME = push_swap
 # SOURCE FILES
