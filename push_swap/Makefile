@@ -5,7 +5,7 @@ CC = cc
 # LIBRARY NAME
 NAME = push_swap
 # SOURCE FILES
-SRCS = create_stack.c instruction.c push_swap.c
+SRCS = create_stack.c instruction.c push_swap.c sort.c
 # OBJECT FILES
 OBJS = $(SRCS:.c=.o)
 
