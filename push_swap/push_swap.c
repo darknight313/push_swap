@@ -16,6 +16,45 @@
 #include <unistd.h>
 #include "push_swap.h"
 
+void	final_sort(s_stack **stack_a, s_stack **stack_b)
+{
+	while (count_nodes(stack_b) > 3)
+	{
+		int index = biggest_number(stack_b)->index;
+		if (index < (count_nodes(stack_b) / 2))
+		{
+			while (index > 0)
+			{
+				printf("ra\n");
+				ra(stack_b);
+				index--;
+			}
+		}
+		else
+		{
+			while (index < count_nodes(stack_b))
+			{
+				printf("rra\n");
+				rra(stack_b);
+				index++;
+			}
+		}
+		printf("pa\n");
+		pa(stack_a, stack_b);
+	}
+	sort_three(stack_b);
+	printf("rra\n");
+	rra(stack_b);
+	printf("pa\n");
+	pa(stack_a, stack_b);
+	printf("rra\n");
+	rra(stack_b);
+	printf("pa\n");
+	pa(stack_a, stack_b);
+	printf("pa\n");
+	pa(stack_a, stack_b);
+}
+
 int	main(int args, char **argv)
 {
 	s_stack *stack_a = NULL;
@@ -26,8 +65,8 @@ int	main(int args, char **argv)
 		append_stack(&stack_a, atoi(argv[i]));
 		i++;
 	}
-	sort_three(&stack_a);
-	print_stack(&stack_a);
+	sort_stack(&stack_a, &stack_b);
+	final_sort(&stack_a, &stack_b);
 }
 
 

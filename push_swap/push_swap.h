@@ -34,6 +34,7 @@ int		sort_checker(s_stack **stack_a);
 void	sort_stack(s_stack **stack_a, s_stack **stack_b);
 void	sort_three(s_stack **stack_a);
 void	sort_five(s_stack **stack_a, s_stack **stack_b);
+s_stack *biggest_number(s_stack **stack_a);
 
 //moves
 void	index_restart(s_stack **stack);
