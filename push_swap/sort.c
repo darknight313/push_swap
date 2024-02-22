@@ -6,185 +6,122 @@
 /*   By: ashirzad <ashirzad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 09:08:42 by ashirzad          #+#    #+#             */
-/*   Updated: 2024/02/12 13:47:03 by ashirzad         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:34:15 by ashirzad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+#include "libft/libft.h"
 
-static s_stack	*smallest_number(s_stack **stack_a)
+int	find_smallest(t_stack **stack_a)
 {
-	s_stack *stack_t = *stack_a;
-	int	index = 0;
-	if (!stack_t->next)
-		return (NULL);
-	int	data = stack_t->data;
+	t_stack	*stack_t;
+	int		data;
+
+	stack_t = *stack_a;
+	while (stack_t->index != -1)
+		stack_t = stack_t->next;
+	data = stack_t->data;
+	stack_t = *stack_a;
 	while (stack_t->next)
 	{
-		if (data > stack_t->next->data)
-		{
+		if (data > stack_t->next->data && stack_t->next->index == -1)
 			data = stack_t->next->data;
-			index = stack_t->next->index;
-		}
 		stack_t = stack_t->next;
 	}
-	stack_t = *stack_a;
-	while (index > 0)
-	{
-		stack_t = stack_t->next;
-		index--;
-	}
-	return (stack_t);
+	return (data);
 }
 
-s_stack *biggest_number(s_stack **stack_a)
+void	index_sort(t_stack **stack_a)
 {
-	s_stack *stack_t = *stack_a;
-	int	index = 0;
-	if (!stack_t->next)
-		return (NULL);
-	int	data = stack_t->data;
-	while (stack_t->next)
-	{
-		if (data < stack_t->next->data)
-		{
-			data = stack_t->next->data;
-			index = stack_t->next->index;
-		}
-		stack_t = stack_t->next;
-	}
-	stack_t = *stack_a;
-	while (index > 0)
-	{
-		stack_t = stack_t->next;
-		index--;
-	}
-	return (stack_t);
-}
+	t_stack	*stack_t;
+	int		i;
+	int		size;
+	int		data;
 
-static void	bubble_sort(s_stack **stack_a)
-{
-	s_stack *stack_t = *stack_a;
-	if (!stack_t)
-		return ;
-	int	i = 0;
-	while (stack_t)
-	{
-		if (!stack_t->next)
-		{
-			if (!i)
-				return ;
-			i = 0;
-			stack_t = *stack_a;
-		}
-		if (stack_t->data < stack_t->next->data)
-		{
-			sa(&stack_t);
-			i++;
-		}
-		stack_t = stack_t->next;
-	}
-}
-
-void	sort_three(s_stack **stack_a)
-{
-	s_stack *stack_t = *stack_a;
-	if (!stack_t)
-		return ;
-	int index = 0;
-	while (!sort_checker(&stack_t))
-	{
-		index = biggest_number(&stack_t)->index;
-		if (index == 1)
-		{
-			printf("rra\n");
-			rra(&stack_t);
-		}
-		else
-		{
-			printf("sa\n");
-			sa(&stack_t);
-		}
-
-	}
-}
-
-static void	push_to_b(s_stack **stack_a, s_stack **stack_b, int index)
-{
 	if (!(*stack_a))
 		return ;
-	if (index < (count_nodes(stack_a) / 2))
+	size = count_nodes(stack_a);
+	i = 0;
+	while (i < size)
 	{
-		while (index > 0)
-		{
-			printf("ra\n");
-			ra(stack_a);
-			index--;
-		}
+		stack_t = *stack_a;
+		data = find_smallest(stack_a);
+		while (stack_t->data != data)
+			stack_t = stack_t->next;
+		stack_t->index = i;
+		i++;
 	}
-	else
-	{
-		while (index < count_nodes(stack_a))
-		{
-			printf("rra\n");
-			rra(stack_a);
-			index++;
-		}
-	}
-	printf("pb\n");
-	pa(stack_b, stack_a);
 }
 
-static void	sort_chunk(s_stack **stack_a, s_stack **stack_b, s_stack **stack_tmp)
+void	sort_three(t_stack **stack_a)
 {
-	while (*stack_tmp)
+	int	index;
+
+	if (!(*stack_a))
+		return ;
+	index = biggest_index(stack_a);
+	while (!sort_checker(stack_a))
 	{
-		s_stack *stack_t = *stack_a;
-		while (stack_t)
+		if ((*stack_a)->index == index)
+			ra(stack_a, "ra\n");
+		else
+			sa(stack_a, "sa\n");
+	}
+}
+
+void	sort_med(t_stack **stack_a, t_stack **stack_b)
+{
+	t_stack	*stack_t;
+	int		i;
+	int		count;
+
+	if (!(*stack_a))
+		return ;
+	i = 0;
+	while (count_nodes(stack_a) > 3)
+	{
+		stack_t = *stack_a;
+		count = 0;
+		while (stack_t->index != i)
 		{
-			if (stack_t->data == (*stack_tmp)->data)
-			{
-				push_to_b(stack_a, stack_b, stack_t->index);
-				break ;
-			}
+			count++;
 			stack_t = stack_t->next;
 		}
-		*stack_tmp = (*stack_tmp)->next;
+		bring_top(stack_a, count);
+		pa(stack_b, stack_a, "pb\n");
+		i++;
 	}
+	sort_three(stack_a);
+	while (count_nodes(stack_b))
+		pa(stack_a, stack_b, "pa\n");
 }
 
-void	sort_stack(s_stack **stack_a, s_stack **stack_b)
+void	radix(t_stack **stack_a, t_stack **stack_b)
 {
-	s_stack *stack_t = *stack_a;
-	if (!(*stack_a))
-		return;
-	s_stack *tmp_one = NULL;
-	s_stack *tmp_two = NULL;
-	s_stack *tmp_three = NULL;
-	s_stack *tmp_four = NULL;
-	s_stack *tmp_five = NULL;
-	while (stack_t)
+	t_stack	*stack_t;
+	int		max_bits;
+	int		size;
+	int		i;
+	int		j;
+
+	max_bits = max_index_bits(stack_a);
+	size = count_nodes(stack_a);
+	i = 0;
+	while (i < max_bits)
 	{
-		if (stack_t->index < 20)
-			append_stack(&tmp_one, stack_t->data);
-		else if (stack_t->index >= 20 && stack_t->index < 40)
-			append_stack(&tmp_two, stack_t->data);
-		else if (stack_t->index >= 40 && stack_t->index < 60)
-			append_stack(&tmp_three, stack_t->data);
-		else if (stack_t->index >= 60 && stack_t->index < 80)
-			append_stack(&tmp_four, stack_t->data);
-		else
-			append_stack(&tmp_five, stack_t->data);
-		stack_t = stack_t->next;
+		j = 0;
+		while (j < size)
+		{
+			stack_t = *stack_a;
+			if (((stack_t->index >> i) & 1))
+				ra(stack_a, "ra\n");
+			else
+				pa(stack_b, stack_a, "pb\n");
+			j++;
+		}
+		while (count_nodes(stack_b))
+			pa(stack_a, stack_b, "pa\n");
+		i++;
 	}
-	bubble_sort(&tmp_one);
-	bubble_sort(&tmp_two);
-	bubble_sort(&tmp_three);
-	bubble_sort(&tmp_four);
-	bubble_sort(&tmp_five);
-	sort_chunk(stack_a, stack_b, &tmp_one);
-	sort_chunk(stack_a, stack_b, &tmp_two);
-	sort_chunk(stack_a, stack_b, &tmp_three);
-	sort_chunk(stack_a, stack_b, &tmp_four);
-	sort_chunk(stack_a, stack_b, &tmp_five);
 }

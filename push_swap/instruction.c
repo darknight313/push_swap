@@ -6,75 +6,76 @@
 /*   By: ashirzad <ashirzad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 11:12:29 by ashirzad          #+#    #+#             */
-/*   Updated: 2024/02/10 11:19:45 by ashirzad         ###   ########.fr       */
+/*   Updated: 2024/02/21 16:29:15 by ashirzad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include "push_swap.h"
+#include "libft/libft.h"
 
-void	index_restart(s_stack **stack)
+void	sa(t_stack **stack_a, char *str)
 {
-	s_stack *stack_t = *stack;
-	if (!stack_t)
-		return ;
-	int index = 0;
-	while (stack_t)
-	{
-		stack_t->index = index;
-		stack_t = stack_t->next;
-		index++;
-	}
-}
+	t_stack	*stack_t;
+	int		tmp;
+	int		index;
 
-void	sa(s_stack **stack_a)
-{
-	s_stack *stack_t = *stack_a;
-	if (!stack_t ||!stack_t->next)
+	if (!stack_a ||!(*stack_a)->next)
 		return ;
-	int tmp = stack_t->data;
+	stack_t = *stack_a;
+	ft_putstr_fd(str, 1);
+	tmp = stack_t->data;
+	index = stack_t->index;
 	stack_t->data = stack_t->next->data;
 	stack_t->next->data = tmp;
+	stack_t->index = stack_t->next->index;
+	stack_t->next->index = index;
 }
 
-void	pa(s_stack **stack_a, s_stack **stack_b)
+void	pa(t_stack **stack_a, t_stack **stack_b, char *str)
 {
-	s_stack *stack_tmp = *stack_b;
+	t_stack	*stack_tmp;
+
 	if (!(*stack_b))
 		return ;
+	stack_tmp = *stack_b;
+	ft_putstr_fd(str, 1);
 	*stack_b = (*stack_b)->next;
 	stack_tmp->next = *stack_a;
 	*stack_a = stack_tmp;
-	index_restart(stack_b);
-	index_restart(stack_a);
 }
 
-
-void	ra(s_stack **stack_a)
+void	ra(t_stack **stack_a, char *str)
 {
-	s_stack *stack_t = *stack_a;
-	if (!stack_t)
+	t_stack	*stack_t;
+
+	if (!stack_a)
 		return ;
-	while(stack_t->next)
+	stack_t = *stack_a;
+	ft_putstr_fd(str, 1);
+	while (stack_t->next)
 	{
-		sa(&stack_t);
+		sa(&stack_t, "");
 		stack_t = stack_t->next;
 	}
 }
 
-
-void	rra(s_stack **stack_a)
+void	rra(t_stack **stack_a, char *str)
 {
-	s_stack *stack_t = *stack_a;
-	if (!stack_t)
+	t_stack	*stack_t;
+	t_stack	*new_stack;
+	t_stack	*last_node;
+
+	stack_t = *stack_a;
+	if (!stack_t || !stack_t->next)
 		return ;
-	int rounds = count_nodes(&stack_t);
-	while (rounds > 1)
+	ft_putstr_fd(str, 1);
+	while (stack_t->next)
 	{
-		ra(&stack_t);
-		rounds--;
+		last_node = stack_t;
+		stack_t = stack_t->next;
 	}
+	new_stack = stack_t;
+	last_node->next = NULL;
+	new_stack->next = *stack_a;
+	*stack_a = new_stack;
 }

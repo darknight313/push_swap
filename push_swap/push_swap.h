@@ -6,41 +6,52 @@
 /*   By: ashirzad <ashirzad@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 10:18:53 by ashirzad          #+#    #+#             */
-/*   Updated: 2024/02/12 09:54:18 by ashirzad         ###   ########.fr       */
+/*   Updated: 2024/02/22 17:18:19 by ashirzad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
-typedef struct s_stack
+typedef struct t_stack
 {
-	int	data;
-	int	index;
-	struct s_stack *next;
-} s_stack;
+	int				data;
+	int				index;
+	struct t_stack	*next;
+}	t_stack;
 
 // create stack
-void	print_stack(s_stack **stack);
-void	append_stack(s_stack **stack_a, int value);
-int		count_nodes(s_stack **stack_a);
-int		dup_checker(s_stack **stack_a);
-int		sort_checker(s_stack **stack_a);
-void	sort_stack(s_stack **stack_a, s_stack **stack_b);
-void	sort_three(s_stack **stack_a);
-void	sort_five(s_stack **stack_a, s_stack **stack_b);
-s_stack *biggest_number(s_stack **stack_a);
+void	create_stack(int args, char **argv, t_stack **stack_a);
+void	append_stack(t_stack **stack_a, int value);
+
+// utils
+void	free_stack(t_stack **stack);
+int		biggest_index(t_stack **stack_a);
+int		count_nodes(t_stack **stack_a);
+int		max_index_bits(t_stack **stack_a);
+void	bring_top(t_stack **stack_a, int index);
+
+//checker
+int		sort_checker(t_stack **stack_a);
+void	sort_three(t_stack **stack_a);
+int		check_args(int args, char **argv);
+
+//sort
+void	sort_three(t_stack **stack_a);
+void	sort_med(t_stack **stack_a, t_stack **stack_b);
+void	index_sort(t_stack **stack_a);
+void	radix(t_stack **stack_a, t_stack **stack_b);
+int		find_smallest(t_stack **stack_a);
 
 //moves
-void	index_restart(s_stack **stack);
-void	sa(s_stack **stack_a);
-void	pa(s_stack **stack_a, s_stack **stack_b);
-void	ra(s_stack **stack_a);
-void	rra(s_stack **stack_a);
+void	sa(t_stack **stack_a, char *str);
+void	pa(t_stack **stack_a, t_stack **stack_b, char *str);
+void	ra(t_stack **stack_a, char *str);
+void	rra(t_stack **stack_a, char *str);
 
 #endif

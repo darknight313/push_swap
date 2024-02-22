@@ -1,35 +1,36 @@
-# COMPILER
 CC = cc
-# COMPILATION FLAGS
-# CFLAGS = -Wall -Wextra -Werror
-# LIBRARY NAME
+CFLAGS = -Wall -Wextra -Werror
 NAME = push_swap
-# SOURCE FILES
-SRCS = create_stack.c instruction.c push_swap.c sort.c
-# OBJECT FILES
-OBJS = $(SRCS:.c=.o)
 
-# DEFAULT TARGET
-all: $(NAME)
+# Explicitly list source files
+SRCS = create_stack.c instruction.c push_swap.c sort.c stack_checker.c utils.c
+OBJS = $(SRCS:%.c=%.o)
 
-# RULE TO COMPILE OBJECT FILES
+LIBFT_DIR = libft
+LIBFT_NAME = libft.a
+LIBFT = $(LIBFT_DIR)/$(LIBFT_NAME)
+
+all: $(LIBFT) $(NAME)
+
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# RULE TO CREATE THE EXECUTABLE
-$(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
-# CLEANUP RULES
+$(NAME): $(OBJS) $(LIBFT)
+	$(CC) $(CFLAGS) -o $@ $^
+
 clean:
 	rm -f $(OBJS)
+	make -C $(LIBFT_DIR) clean
 
 fclean: clean
+	@echo "Force cleaning"
 	rm -f $(NAME)
+	make -C $(LIBFT_DIR) fclean
 
-# RECOMPILATION RULE
 re: fclean all
 
-# PHONY TARGETS
 .PHONY: all clean fclean re
 
